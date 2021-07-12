@@ -7,6 +7,7 @@
 #include "param_define.h"
 
 TEST(ucfg, param_set) {
+  std::cout << "param_set test start" << std::endl;
   param_save_s1_test(true);
   std::cout << "Param: " << param_get_s1_test() << std::endl;
   std::cout << "Param: " << param_get_s3_test() << std::endl;

@@ -9,7 +9,7 @@
 #include <ucfg/param/param_base.h>
 #include <ucfg/param/param_default_data.h>
 
-#define UCFG_DEFAULT_DATA_SECTION(manager) ucfg_default_data_##manager
+#define UCFG_DEFAULT_DATA_SECTION(manager) ucfg_default_data_section_##manager
 
 // __attribute((__used__)) Prevent being optimized
 #define UCFG_SECTION_DECLARE_(section) \
@@ -36,11 +36,12 @@
   }                                                                           \
   struct hack
 
-#define UCFG_DEFINE_PARAM(manager, type, section, name, default_value)        \
-  static struct ucfg::DefaultDataNode _ucfg_register_##manager##section##name \
-  UCFG_SECTION_DECLARE(UCFG_DEFAULT_DATA_SECTION(manager)) {                  \
-    .key_ = #section "-" #name, .type_ = ucfg::DefaultDataNode::t_##type,     \
-    .value_ = {.UCFG_CAT(type, _value) = default_value}                       \
+#define UCFG_DEFINE_PARAM(manager, type, section, name, default_value)    \
+  UCFG_EXPORT struct ucfg::DefaultDataNode                         \
+      _ucfg_register_##manager##section##name                             \
+      UCFG_SECTION_DECLARE(UCFG_DEFAULT_DATA_SECTION(manager)) {          \
+    .key_ = #section "-" #name, .type_ = ucfg::DefaultDataNode::t_##type, \
+    .value_ = {.UCFG_CAT(type, _value) = default_value}                   \
   }
 
 #define UCFG_DEFINE_PARAM_BOOL(manager, section, name, default_value) \
